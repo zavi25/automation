@@ -1,0 +1,93 @@
+######################################################### {COPYRIGHT-TOP} ###
+# Licensed Materials - Property of IBM
+# 5900-AEO
+#
+# Copyright IBM Corp. 2020, 2021. All Rights Reserved.
+#
+# US Government Users Restricted Rights - Use, duplication, or
+# disclosure restricted by GSA ADP Schedule Contract with IBM Corp.
+######################################################### {COPYRIGHT-END} ###
+# Large Profile
+# The license value is set to false, while using this CR, set it to true.
+apiVersion: base.automation.ibm.com/v1beta1
+kind: AutomationBase
+metadata:
+  name: large
+spec:
+  license:
+    accept: false
+  tls: {}
+  version: 1.0.0
+  kafka:
+    kafka:
+      replicas: 6
+      resources:
+        limits:
+          cpu: 4000m
+          memory: 8Gi
+        requests:
+          cpu: 4000m
+          memory: 8Gi
+      storage:
+        type: persistent-claim
+        size: 100Gi
+    zookeeper:
+      replicas: 3
+      resources:
+        limits:
+          cpu: 1000m
+          memory: 2Gi
+        requests:
+          cpu: 1000m
+          memory: 2Gi
+      storage:
+        type: persistent-claim
+        size: 10Gi
+  elasticsearch:
+    nodegroupspecs:
+      - name: master
+        replicas: 3
+        storage:
+          size: 5Gi
+        config:
+          - key: node.master
+            value: "true"
+          - key: node.data
+            value: "false"
+          - key: node.ingest
+            value: "false"
+        template:
+          pod:
+            spec:
+              containers:
+                - name: elasticsearch
+                  resources:
+                    requests:
+                      cpu: 1000m
+                      memory: 2Gi
+                    limits:
+                      cpu: 1000m
+                      memory: 2Gi
+      - name: data
+        replicas: 3
+        storage:
+          size: 50Gi
+        config:
+          - key: node.master
+            value: "false"
+          - key: node.data
+            value: "true"
+          - key: node.ingest
+            value: "false"
+        template:
+          pod:
+            spec:
+              containers:
+                - name: elasticsearch
+                  resources:
+                    requests:
+                      cpu: 3000m
+                      memory: 16Gi
+                    limits:
+                      cpu: 3000m
+                      memory: 16Gi

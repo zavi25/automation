@@ -1,0 +1,63 @@
+######################################################### {COPYRIGHT-TOP} ###
+# Licensed Materials - Property of IBM
+# 5900-AEO
+#
+# Copyright IBM Corp. 2020, 2021. All Rights Reserved.
+#
+# US Government Users Restricted Rights - Use, duplication, or
+# disclosure restricted by GSA ADP Schedule Contract with IBM Corp.
+######################################################### {COPYRIGHT-END} ###
+# Medium Profile
+# The license value is set to false, while using this CR, set it to true
+apiVersion: base.automation.ibm.com/v1beta1
+kind: AutomationBase
+metadata:
+  name: medium
+spec:
+  license:  
+    accept: false
+  tls: {}
+  version: 1.0.0
+  kafka:
+    kafka:
+      replicas: 3
+      resources:
+        limits:
+          cpu: 2000m
+          memory: 4Gi
+        requests:
+          cpu: 2000m
+          memory: 4Gi
+      storage:
+        type: persistent-claim
+        size: 10Gi
+    zookeeper:
+      replicas: 3
+      resources:
+        limits:
+          cpu: 1000m
+          memory: 2Gi
+        requests:
+          cpu: 1000m
+          memory: 2Gi
+      storage:
+        type: persistent-claim
+        size: 10Gi
+  elasticsearch:
+    nodegroupspecs:
+     - name: master-data
+       replicas: 3
+       storage:
+          size: 55Gi
+       template:
+         pod:
+            spec:
+              containers:
+                - name: elasticsearch
+                  resources:
+                    requests:
+                      cpu: 3000m
+                      memory: 5Gi
+                    limits:
+                      cpu: 3000m
+                      memory: 5Gi
