@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: demo-nav-ext
+  labels:
+    icpdata_addon: "true"
+    icpdata_addon_version: "v1"
+data:
+  extensions: |
+    [
+      {
+        "extension_point_id": "left_menu_folder",
+        "extension_name": "demo_nav_folder",
+        "display_name": "IBM Folder",
+        "order_hint": 200,
+        "match_permissions": "",
+        "meta": {},
+        "details":
+        {
+          "icon": "nav/icons/unified-switcher"
+        }
+      },
+      {
+        "extension_point_id": "left_menu_item",
+        "extension_name": "demo-nav-extn",
+        "display_name": "IBM Homepage",
+        "order_hint": 200,
+        "match_permissions": "",
+        "meta": {},
+        "details": {
+          "parent_folder": "demo_nav_folder",
+          "href": "https://www.ibm.com"
+        }
+      }
+    ]
